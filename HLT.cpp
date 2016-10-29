@@ -16,7 +16,7 @@ double kp=5,ki=0.5,kd=0.1;
 
 
 byte ATuneModeRemember=2;
-double aTuneStep=50, aTuneNoise=1, aTuneStartValue=100;
+double aTuneStep=50, aTuneNoise=1, aTuneStartValue=200;
 unsigned int aTuneLookBack=20;
 boolean tuning = false;
 
