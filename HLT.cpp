@@ -54,10 +54,10 @@ void DriveOutput()
   }
 }
 
-unsigned char x=50;
+unsigned char x=10;
 
 void hlt_control() {
-  if(x++ > 50) { // send temperature once per 5 seconds  
+  if(x++ > 10) { // print  temperature once per second  
     Serial.print("th ");
     Serial.print(HLTTemp);
     Serial.println("");
