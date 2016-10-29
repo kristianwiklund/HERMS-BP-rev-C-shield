@@ -11,6 +11,8 @@ DeviceAddress HLTThermo = {0x28, 0x8B, 0x1B, 0x6E, 0x05, 0x00, 0x00, 0xB0 };
 float HLTTemp=100.0;
 DeviceAddress MLTThermo = {0x28, 0x8B, 0x1B, 0x6E, 0x05, 0x00, 0x00, 0xB0 };
 
+
+
 // function to print a device address
 void printAddress(DeviceAddress deviceAddress)
 {
@@ -99,7 +101,7 @@ void thermo_setup() {
 void thermo_loop() {
  if (sensors.isConversionAvailable(0))
   {
-    HLTTemp = sensors.getTempC(HLTThermo);
+    HLTTemp = sensors.getTempC(HLTThermo);     
     MLTTemp = sensors.getTempC(MLTThermo);
     sensors.requestTemperatures();
   }
