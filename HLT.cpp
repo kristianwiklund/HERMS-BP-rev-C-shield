@@ -12,17 +12,27 @@ unsigned long  modelTime, serialTime;
 
 unsigned long windowStartTime;
 volatile long onTime = 0;
-double kp=5,ki=0.5,kd=0.1;
-
+double kp=58.21,ki=0.14,kd=0;
 
 byte ATuneModeRemember=2;
-double aTuneStep=500, aTuneNoise=1, aTuneStartValue=500;
+double aTuneStep=200, aTuneNoise=1, aTuneStartValue=200;
 unsigned int aTuneLookBack=20;
 boolean tuning = false;
 
 PID myPID(&HLTInput, &HLTOutput, &HLTSetpoint, kp,ki,kd, DIRECT);
 PID_ATune aTune(&HLTInput, &HLTOutput);
 
+void print_pid_settings() {
+        Serial.print("q ");
+      Serial.print(kp);
+      Serial.print(" ");
+      Serial.print(ki);
+      Serial.print(" ");
+      Serial.print(kd);
+      Serial.print(" ");
+      Serial.println(HLTSetpoint);
+
+}
 
 
 void hlt_setup() {
@@ -35,15 +45,7 @@ void hlt_setup() {
   pinMode(RelayPin, OUTPUT);
   digitalWrite(RelayPin, HIGH);
 
-      Serial.print("q ");
-      Serial.print(kp);
-      Serial.print(" ");
-      Serial.print(ki);
-      Serial.print(" ");
-      Serial.print(kd);
-      Serial.print(" ");
-      Serial.println(HLTSetpoint);
-      
+  print_pid_settings();      
   
 }
 
@@ -147,9 +149,9 @@ void hlt_control() {
 
   if(x++ > 10) { // print  temperature once per second  
    if(!tuning) {
- //   Serial.print("th ");
- //   Serial.print(HLTTemp);
- //   Serial.println("");
+    Serial.print("th ");
+    Serial.print(HLTTemp);
+    Serial.println("");
    }
     if(tuning) {
 //      Serial.print("d tuning HLT Window: ");

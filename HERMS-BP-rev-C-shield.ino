@@ -14,7 +14,7 @@
 // We need the following commands:
 // x - stop everything and disable all outputs. This disables heating and pumps and sets the valves in "recirculation, no heat"
 // s - start
-// t <celsius> - temperature setpoint
+// t<vessel> <celsius> - temperature setpoint
 // p <p>, i <i>, d <d> - regulator parameters
 // q - read the PID parameters
 // a - initiate autotune
