@@ -16,7 +16,7 @@ double kp=5,ki=0.5,kd=0.1;
 
 
 byte ATuneModeRemember=2;
-double aTuneStep=50, aTuneNoise=1, aTuneStartValue=100;
+double aTuneStep=500, aTuneNoise=1, aTuneStartValue=500;
 unsigned int aTuneLookBack=20;
 boolean tuning = false;
 
@@ -61,7 +61,7 @@ void DriveOutput()
   { //time to shift the Relay Window
      windowStartTime += HLTWindowSize;
   }
-  if((onTime > 100) && (onTime > (now - windowStartTime)))
+  if((onTime > 10) && (onTime > (now - windowStartTime)))
   {
      digitalWrite(RelayPin,LOW);
 //     Serial.println("d HLT ON");
@@ -116,12 +116,7 @@ void hlt_control() {
 
     unsigned long now = millis();
 
-  if(x++ > 10) { // print  temperature once per second  
-    Serial.print("th ");
-    Serial.print(HLTTemp);
-    Serial.println("");
-    x=0;
-  }
+  HLTInput = HLTTemp;
 
   if(tuning)
   {
@@ -150,9 +145,22 @@ void hlt_control() {
   } else
     myPID.Compute();
 
-  
-//  Serial.print("d HLT Window: ");
-//  Serial.println(HLTOutput);
+  if(x++ > 10) { // print  temperature once per second  
+   if(!tuning) {
+ //   Serial.print("th ");
+ //   Serial.print(HLTTemp);
+ //   Serial.println("");
+   }
+    if(tuning) {
+//      Serial.print("d tuning HLT Window: ");
+//    Serial.println(HLTOutput);
+  }
+
+    
+    x=0;
+  }
+
+
   onTime = HLTOutput;
   DriveOutput();
 }

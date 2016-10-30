@@ -30,10 +30,9 @@ Buzzer buzzer;
 
 
 void setup() {
-
+ serial_setup();
   display_setup();
   hlt_setup();
-  serial_setup();
   thermo_setup();
   mlt_setup();
   
