@@ -1,25 +1,25 @@
 Experimental code to do very simple HERMS brewing with an arduino and the brewpi rev C shield.
 Still untested since I haven't put the system together yet so use on your own risk.
-Very much WIP.
+Very much WIP. Frontend is reused from my brewtroller frontend and will change, in particular the program part which will become much simpler. 
 
 
 Dependencies:
 
 * For the firmware:
 
-- BrewPi libraries,  https://github.com/kristianwiklund/BrewpiLibs
-- Arduino PID library 
-- Arduino PID Autotune library,  http://playground.arduino.cc/Code/PIDAutotuneLibrary
-- Arduino OneWire library
-- Arduino Dallas temperature library
+** BrewPi libraries,  https://github.com/kristianwiklund/BrewpiLibs
+** Arduino PID library 
+** Arduino PID Autotune library,  http://playground.arduino.cc/Code/PIDAutotuneLibrary
+** Arduino OneWire library
+** Arduino Dallas temperature library
 
 * For the frontend:
 
-- Python 2.7
-- matplotlib
-- PyQt4
-- serial
-- threading
+**  Python 2.7
+** matplotlib
+** PyQt4
+** serial
+** threading
 
 
 License: BSD 3-clause
