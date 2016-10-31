@@ -2,9 +2,24 @@
 #include "Arduino.h"
 
 extern void changeAutoTune();
-extern double HLTSetpoint;
-extern void print_pid_settings();
+extern double HLTSetpoint, HLTSetpoint;
+
+extern double kp,ki,kd;
+
 extern void writesetpoints();
+
+void print_regulator_settings() {
+        Serial.print("q ");
+      Serial.print(kp);
+      Serial.print(" ");
+      Serial.print(ki);
+      Serial.print(" ");
+      Serial.print(kd);
+      Serial.print(" ");
+      Serial.print(HLTSetpoint);
+      Serial.print(" ");
+      Serial.println(MLTSetpoint);
+}
 
 void serial_setup() {
     Serial.begin(9600);
@@ -21,10 +36,17 @@ void readandsettemp() {
   vessel = Serial.read();
   temperature = Serial.parseFloat();
 
-  if(vessel=='h') {
-    HLTSetpoint = temperature;
-    print_pid_settings();
+  switch(vessel) {
+    case 'h':
+      HLTSetpoint = temperature;
+      break;
+    case 'm': 
+  	  MLTSetpoint = temperature;
+      break;
   }
+
+  print_regulator_settings();
+
   writesetpoints();
 }
 

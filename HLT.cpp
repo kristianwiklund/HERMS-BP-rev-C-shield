@@ -22,17 +22,7 @@ boolean tuning = false;
 PID myPID(&HLTInput, &HLTOutput, &HLTSetpoint, kp,ki,kd, DIRECT);
 PID_ATune aTune(&HLTInput, &HLTOutput);
 
-void print_pid_settings() {
-        Serial.print("q ");
-      Serial.print(kp);
-      Serial.print(" ");
-      Serial.print(ki);
-      Serial.print(" ");
-      Serial.print(kd);
-      Serial.print(" ");
-      Serial.println(HLTSetpoint);
-
-}
+extern void print_regulator_settings();
 
 
 void hlt_setup() {
@@ -45,7 +35,7 @@ void hlt_setup() {
   pinMode(RelayPin, OUTPUT);
   digitalWrite(RelayPin, HIGH);
 
-  print_pid_settings();      
+  print_regulator_settings();      
   
 }
 

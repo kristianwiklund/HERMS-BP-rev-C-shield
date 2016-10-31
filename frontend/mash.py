@@ -20,7 +20,6 @@ class Tun:
         self.newtemperature=float(self.bt.getTemp(self.id))
         self.newsetpoint=float(self.bt.getSetpoint(self.id))
         self.newpower=self.bt.getHeatpwr(self.id)
-	print (self.newtemperature)
 
 # keep track of the HLT recirculation
 # bt assumptions:
