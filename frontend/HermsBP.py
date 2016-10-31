@@ -8,6 +8,7 @@ from PyQt4 import QtGui, uic
 from HBPSerial import *
 from mash import *
 from functools import *
+from Program import *
 from matplotlib.backends import qt_compat
 use_pyside = qt_compat.QT_API == qt_compat.QT_API_PYSIDE
 if use_pyside:
@@ -118,48 +119,6 @@ class XTun(Tun):
 				self.pwrLabel.setText(str(int(self.power))+"%")
 
                     
-class XProgramStatus:
-
-	oldstep=255
-	xdata = {}
-	ydata = {}
-	xdata["HLT"] = []
-	ydata["HLT"] = []
-	xdata["MLT"] = []
-	ydata["MLT"] = []
-
-
-	def __init__(self, w, bt,stepWidgets,nextwidget,stopalarmwidget,plot):
-	  self.stepWidgets = stepWidgets
-	  nextwidget.clicked.connect(self.nextstep)
-	  stopalarmwidget.clicked.connect(self.stopalarm)
-	  self.plot = plot
-	  self.bt = bt
-
-	def stopalarm(self):
-	  # code to change the alarm indicator back to inactive
-	  self.bt.stopAlarm()
-
-	def nextstep(self):
-	  self.bt.advStep()
-
-	def update(self):
-	
-		# need to update the progress bars and display which step is active
-		# change this
-		fullstatus = self.bt.getFullStatus()
-		#               print ("step" + str(brewstep))
-
-
-		self.xdata["HLT"].append(fullstatus["timestamp"])
-		self.ydata["HLT"].append(float(fullstatus["HLT"]["temp"]))
-
-		self.xdata["MLT"].append(fullstatus["timestamp"])
-		self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
-		#print self.ydata
-
-		self.plot.update_plot(self.xdata, self.ydata)
-
 
                     
           
@@ -187,7 +146,7 @@ class MainWin(QtGui.QMainWindow):
               9: self.ui.progressacc2,
               10: self.ui.progressmashout
               }
-         self.programstatus = XProgramStatus(self.ui, bt, stepwidgets,self.ui.nextProgStep,self.ui.stopAlarm,sc)
+         self.programstatus = Program(self.ui, bt, stepwidgets,self.ui.nextProgStep,self.ui.stopAlarm,sc)
 
 
 
