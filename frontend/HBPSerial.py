@@ -1,5 +1,6 @@
 import serial
 import threading
+import time
 
 class HBPSerial:
 
@@ -27,6 +28,7 @@ class HBPSerial:
 
 	def __init__(self,port):
 		self.port = port
+		self.start_time = time.time()
 		self.ser = serial.Serial(port=self.port,baudrate=9600)
 		self.d={}
 
@@ -62,10 +64,15 @@ class HBPSerial:
 			return 0.0
 	
 	def getProgramStep(self):
-		pass
+		return(255)
 
 	def getFullStatus(self):
-		pass
+		s = {}
+		s["timestamp"] = time.time() - self.start_time # seconds since script started
+		s["HLT"] = {'temp':float(self.d["th"]),'setpoint':float(self.d["sh"])}
+		s["MLT"] = {"temp":float(self.d["tm"]),"setpoint":float(self.d["sm"])}
+		
+		return(s)
 		
 	def stopAlarm(self):
 		pass

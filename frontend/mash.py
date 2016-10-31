@@ -49,8 +49,8 @@ class HLTRecirc:
         HLTRecirc.update(self)
         
 class BrewStep:
-    step=-234 
-    newstep=0
+    step=255 
+    newstep=255
 
     stepnames = {
         0: "FILL",

@@ -120,108 +120,106 @@ class XTun(Tun):
                     
 class XProgramStatus:
 
-     oldstep=255
-     xdata = {}
-     ydata = {}
-     xdata["HLT"] = []
-     ydata["HLT"] = []
-     xdata["MLT"] = []
-     ydata["MLT"] = []
-     
-
-     def __init__(self, w, bt,stepWidgets,nextwidget,stopalarmwidget,plot):
-          self.BrewStep = BrewStep(bt)
-          self.stepWidgets = stepWidgets
-          nextwidget.clicked.connect(self.nextstep)
-          stopalarmwidget.clicked.connect(self.stopalarm)
-          self.plot = plot
-          self.bt = bt
-
-     def stopalarm(self):
-          # code to change the alarm indicator back to inactive
-          self.bt.stopAlarm()
-
-     def nextstep(self):
-          self.bt.advStep()
-
-     def update(self):
-          # if the brewstep is 255 the system is idle
-          brewstep = self.BrewStep.getStep()
+	oldstep=255
+	xdata = {}
+	ydata = {}
+	xdata["HLT"] = []
+	ydata["HLT"] = []
+	xdata["MLT"] = []
+	ydata["MLT"] = []
 
 
+	def __init__(self, w, bt,stepWidgets,nextwidget,stopalarmwidget,plot):
+	  self.BrewStep = BrewStep(bt)
+	  self.stepWidgets = stepWidgets
+	  nextwidget.clicked.connect(self.nextstep)
+	  stopalarmwidget.clicked.connect(self.stopalarm)
+	  self.plot = plot
+	  self.bt = bt
 
-          # need to update the progress bars and display which step is active
-		  # change this
-          fullstatus = self.bt.getFullStatus()
-#               print ("step" + str(brewstep))
-          print (fullstatus)
+	def stopalarm(self):
+	  # code to change the alarm indicator back to inactive
+	  self.bt.stopAlarm()
 
-               # put text on the active step
-          if self.oldstep != brewstep:
-              self.plot.annotate(fullstatus["timestamp"], float(fullstatus["MLT"]["temp"]), self.BrewStep.stepnames[brewstep])
+	def nextstep(self):
+	  self.bt.advStep()
 
-              for key in self.stepWidgets:
-                  if key == brewstep:
-                      self.stepWidgets[key].setTextVisible(True) 
-                  else:
-                      self.stepWidgets[key].setTextVisible(False)
-                      
-                  self.oldstep = brewstep
-                      
-               # update temperature plots
+	def update(self):
+		# if the brewstep is 255 the system is idle
+		brewstep = self.BrewStep.getStep()
 
-          self.xdata["HLT"].append(fullstatus["timestamp"])
-          self.ydata["HLT"].append(float(fullstatus["HLT"]["temp"]))
-          
-          self.xdata["MLT"].append(fullstatus["timestamp"])
-          self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
-#          print self.ydata
-          
-          self.plot.update_plot(self.xdata, self.ydata)
+		# need to update the progress bars and display which step is active
+		# change this
+		fullstatus = self.bt.getFullStatus()
+		#               print ("step" + str(brewstep))
+		print (fullstatus)
+	
+		   # put text on the active step
+		if self.oldstep != brewstep:
+		  self.plot.annotate(fullstatus["timestamp"], float(fullstatus["MLT"]["temp"]), self.BrewStep.stepnames[brewstep])
 
+		  for key in self.stepWidgets:
+			  if key == brewstep:
+				  self.stepWidgets[key].setTextVisible(True) 
+			  else:
+				  self.stepWidgets[key].setTextVisible(False)
+				  
+			  self.oldstep = brewstep
+				  
+		   # update temperature plots
 
-               # then figure out what the progress is.
-               # for steps that are timer controlled, we can use the timer
-               # for filling steps, we can use the volume (not implemented, I don't have autofill)
-               # for steps that are temperature controlled, it is more difficult ("what is 100% temperature compared to what")
-               # being celcius-centric we define the range for 100 % as zero to desired target temperature
+		self.xdata["HLT"].append(fullstatus["timestamp"])
+		self.ydata["HLT"].append(float(fullstatus["HLT"]["temp"]))
 
-                    
-               # techdebt: we must be able to configure if we use the HLT or MLT for preheat - this assumes that it is a HLT
+		self.xdata["MLT"].append(fullstatus["timestamp"])
+		self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
+		#print self.ydata
 
-          if brewstep==2: # preheat strike water
-               # get the temperature for the HLT
-               # get the program step temperature
-               # calculate and set percentage in progress bar
-
-               progress = (float(fullstatus["HLT"]["temp"]))/float(fullstatus["HLT"]["setpoint"])
-               #print (progress)
-               self.stepWidgets[brewstep].setValue(int(100*progress))
-
-          if brewstep==3: # dough in
-               progress = (float(fullstatus["MLT"]["temp"]))/float(fullstatus["MLT"]["setpoint"])
-               #print (progress)
-               self.stepWidgets[brewstep].setValue(int(100*progress))
-
-          if brewstep==6: # acid rest
-               if fullstatus["mashtimer"]["status"] == 1: #mashing
-                    progdata = bt.getProgram(1) # this needs fixing!
-                    progress = (float(fullstatus["mashtimer"]["value"])/float(progdata[brewstep]["time"])/60000)
-                    self.stepWidgets[brewstep].setValue(int(100*progress))                    
-
-          if brewstep==8 or brewstep==9: # the saccarification steps
-              self.stopalarm() # turn off the alarms as soon as possible - it is annoying. I don't really do anything here anyway
-              
+		self.plot.update_plot(self.xdata, self.ydata)
 
 
-          # logic to move one step forward automatically for some parts.
-          # I personally do not care about:
-          # delay, refill, and will skip ahead over those
+		   # then figure out what the progress is.
+		   # for steps that are timer controlled, we can use the timer
+		   # for filling steps, we can use the volume (not implemented, I don't have autofill)
+		   # for steps that are temperature controlled, it is more difficult ("what is 100% temperature compared to what")
+		   # being celcius-centric we define the range for 100 % as zero to desired target temperature
 
-          if brewstep==1 or brewstep==4 or brewstep==14:
-              self.stopalarm()
-              self.nextstep()
-              print "skipped step "+str(brewstep)
+				
+		   # techdebt: we must be able to configure if we use the HLT or MLT for preheat - this assumes that it is a HLT
+
+		if brewstep==2: # preheat strike water
+		   # get the temperature for the HLT
+		   # get the program step temperature
+		   # calculate and set percentage in progress bar
+
+		   progress = (float(fullstatus["HLT"]["temp"]))/float(fullstatus["HLT"]["setpoint"])
+		   #print (progress)
+		   self.stepWidgets[brewstep].setValue(int(100*progress))
+
+		if brewstep==3: # dough in
+		   progress = (float(fullstatus["MLT"]["temp"]))/float(fullstatus["MLT"]["setpoint"])
+		   #print (progress)
+		   self.stepWidgets[brewstep].setValue(int(100*progress))
+
+		if brewstep==6: # acid rest
+		   if fullstatus["mashtimer"]["status"] == 1: #mashing
+				progdata = bt.getProgram(1) # this needs fixing!
+				progress = (float(fullstatus["mashtimer"]["value"])/float(progdata[brewstep]["time"])/60000)
+				self.stepWidgets[brewstep].setValue(int(100*progress))                    
+
+		if brewstep==8 or brewstep==9: # the saccarification steps
+		  self.stopalarm() # turn off the alarms as soon as possible - it is annoying. I don't really do anything here anyway
+		  
+
+
+		# logic to move one step forward automatically for some parts.
+		# I personally do not care about:
+		# delay, refill, and will skip ahead over those
+
+		if brewstep==1 or brewstep==4 or brewstep==14:
+		  self.stopalarm()
+		  self.nextstep()
+		  print "skipped step "+str(brewstep)
                     
           
 class MainWin(QtGui.QMainWindow):
@@ -262,7 +260,7 @@ class MainWin(QtGui.QMainWindow):
      def updateui(self):
           self.MLT.update()
           self.HLT.update()
-  #        self.programstatus.update()
+          self.programstatus.update()
 
 
 ### main
