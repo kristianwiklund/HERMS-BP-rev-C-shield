@@ -3,13 +3,24 @@ Still untested since I haven't put the system together yet so use on your own ri
 Very much WIP.
 
 
-Requires:
+Dependencies:
+
+* For the firmware:
 
 - BrewPi libraries,  https://github.com/kristianwiklund/BrewpiLibs
 - Arduino PID library 
-- Arduino PID Autotune library (dependency, but not implemented),  http://playground.arduino.cc/Code/PIDAutotuneLibrary
+- Arduino PID Autotune library,  http://playground.arduino.cc/Code/PIDAutotuneLibrary
 - Arduino OneWire library
 - Arduino Dallas temperature library
+
+* For the frontend:
+
+- Python 2.7
+- matplotlib
+- PyQt4
+- serial
+- threading
+
 
 License: BSD 3-clause
 
