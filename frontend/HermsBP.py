@@ -82,7 +82,7 @@ class XTun(Tun):
 			self.setpointsaved = True
 			self.bt.setSetpoint(self.id, self.manualsetpoint)
         
-	def __init__(self, w, bt, myid, setpoint, temperature, setbutton, dial):
+	def __init__(self, w, bt, myid, setpoint, temperature, setbutton, dial, pwrlabel):
 		Tun.__init__(self,bt, myid)
 		self.setPointWidget = setpoint
 		self.dialWidget = dial
@@ -90,6 +90,7 @@ class XTun(Tun):
 		w.connect(dial,SIGNAL("valueChanged(int)"), partial(XTun.setSetpointManually,self))
 		self.setbuttonWidget = setbutton
 		setbutton.clicked.connect(partial(XTun.setSetpointSave,self))
+		self.pwrLabel = pwrlabel
   
 	def update(self):
 		if self.setpointsaved:
@@ -99,7 +100,7 @@ class XTun(Tun):
 				self.setPointWidget.setStyleSheet("QLCDNumber{color:green;}")
 				self.setpoint = self.newsetpoint
 				self.manualsetpoint = self.setpoint
-				print("new setpoint "+str(self.setpoint))
+				#print("new setpoint "+str(self.setpoint))
 
 			if (self.newtemperature < 200) and (self.newtemperature > -20): # disconnected onewire results in weird numbers.
 				if self.newtemperature != self.temperature:
@@ -111,6 +112,11 @@ class XTun(Tun):
 			else:
 				self.temperatureWidget.setHexMode()
 				self.temperatureWidget.display(int("dead",16))
+				
+			if (self.newpower != self.power):
+				self.power = self.newpower
+				self.pwrLabel.setText(str(int(self.power))+"%")
+
                     
 class XProgramStatus:
 
@@ -229,8 +235,8 @@ class MainWin(QtGui.QMainWindow):
 
          sc = TehFigure(self.ui.plotlayout)
 
-         self.HLT = XTun(self.ui, bt, "h", self.ui.HLTSet, self.ui.HLTTemp, self.ui.toggleHLT, self.ui.HLTdial)
-         self.MLT = XTun(self.ui, bt, "m", self.ui.MLTSet, self.ui.MLTTemp, self.ui.toggleMLT, self.ui.MLTdial)
+         self.HLT = XTun(self.ui, bt, "h", self.ui.HLTSet, self.ui.HLTTemp, self.ui.toggleHLT, self.ui.HLTdial,self.ui.HLTPower)
+         self.MLT = XTun(self.ui, bt, "m", self.ui.MLTSet, self.ui.MLTTemp, self.ui.toggleMLT, self.ui.MLTdial,self.ui.MLTPower)
 
 
          stepwidgets = {

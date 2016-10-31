@@ -6,9 +6,9 @@ class HBPSerial:
 	def parse(self,s):
 		# mechanisms to update data structures
 		arr = s.split()
-#		print(arr)
+		print(arr)
 		
-		if arr[0] in {"tm","th"}:
+		if arr[0] in {"tm","th","ph","pm"}:
 			self.d[arr[0]] = arr[1]
 		elif arr[0]=="q":
 			self.d["kp"] = arr[1]
@@ -57,9 +57,9 @@ class HBPSerial:
     # get the heating power of a tun
 	def getHeatpwr(self,tunid):
 		if "p"+tunid in self.d:
-			return self.d["p"+tunid]
+			return float(self.d["p"+tunid])
 		else:
-			return 0
+			return 0.0
 	
 	def getProgramStep(self):
 		pass

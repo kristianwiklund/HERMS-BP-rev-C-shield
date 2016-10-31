@@ -12,6 +12,7 @@ unsigned long  modelTime, serialTime;
 
 unsigned long windowStartTime;
 volatile long onTime = 0;
+long oldOnTime=0;
 double kp=58.21,ki=0.14,kd=0;
 
 byte ATuneModeRemember=2;
@@ -154,6 +155,11 @@ void hlt_control() {
 
 
   onTime = HLTOutput;
+  if(onTime!=oldOnTime) {
+    Serial.print("ph ");
+    Serial.println(onTime/(HLTWindowSize/100));
+    oldOnTime=onTime;
+  }
   DriveOutput();
 }
 
