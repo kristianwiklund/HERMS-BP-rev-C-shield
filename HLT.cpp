@@ -124,32 +124,16 @@ void hlt_control() {
       ki = aTune.GetKi();
       kd = aTune.GetKd();
       myPID.SetTunings(kp,ki,kd);
-      Serial.print("q ");
-      Serial.print(kp);
-      Serial.print(" ");
-      Serial.print(ki);
-      Serial.print(" ");
-      Serial.print(kd);
-      Serial.print(" ");
-      Serial.println(HLTSetpoint);
-      
+      print_regulator_settings();
       AutoTuneHelper(false);
     }
   } else
     myPID.Compute();
 
   if(x++ > 10) { // print  temperature once per second  
-   if(!tuning) {
     Serial.print("th ");
     Serial.print(HLTTemp);
-    Serial.println("");
-   }
-    if(tuning) {
-//      Serial.print("d tuning HLT Window: ");
-//    Serial.println(HLTOutput);
-  }
-
-    
+    Serial.println("");  
     x=0;
   }
 

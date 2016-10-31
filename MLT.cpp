@@ -38,6 +38,7 @@ void mlt_control() {
     Serial.print("tm ");
     Serial.print(MLTTemp);
     Serial.println("");
+    xx=0;
    }
 
   switch(state) {

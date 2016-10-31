@@ -145,11 +145,12 @@ class MainWin(QtGui.QMainWindow):
 
 	def startprogram(self, filename):
 		self.programstatus.load(filename)
+		self.programstatus.run()
 
 
 ### main
 
-bt = HBPSerial("COM5:")
+bt = HBPSerial("/dev/ttyACM1")
 app = QtGui.QApplication(sys.argv)
 window = MainWin(bt)
 
