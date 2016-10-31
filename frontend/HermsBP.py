@@ -136,17 +136,7 @@ class MainWin(QtGui.QMainWindow):
          self.HLT = XTun(self.ui, bt, "h", self.ui.HLTSet, self.ui.HLTTemp, self.ui.toggleHLT, self.ui.HLTdial,self.ui.HLTPower)
          self.MLT = XTun(self.ui, bt, "m", self.ui.MLTSet, self.ui.MLTTemp, self.ui.toggleMLT, self.ui.MLTdial,self.ui.MLTPower)
 
-
-         stepwidgets = {
-              2: self.ui.progresspreheat,
-              5: self.ui.progressdoughin,
-              6: self.ui.progressacidrest,
-              7: self.ui.progressproteinrest,
-              8: self.ui.progressacc1,
-              9: self.ui.progressacc2,
-              10: self.ui.progressmashout
-              }
-         self.programstatus = Program(self.ui, bt, stepwidgets,self.ui.nextProgStep,self.ui.stopAlarm,sc)
+         self.programstatus = Program(self.ui, bt,sc)
 
 
 

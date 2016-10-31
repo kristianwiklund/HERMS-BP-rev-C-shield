@@ -23,10 +23,8 @@ class Program:
 	ydata["MLT"] = []
 
 
-	def __init__(self, w, bt,stepWidgets,nextwidget,stopalarmwidget,plot):
-	  self.stepWidgets = stepWidgets
-	  nextwidget.clicked.connect(self.nextstep)
-	  stopalarmwidget.clicked.connect(self.stopalarm)
+	def __init__(self, w, bt,plot):
+
 	  self.plot = plot
 	  self.bt = bt
 
