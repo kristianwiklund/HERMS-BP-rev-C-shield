@@ -12,11 +12,12 @@ class HBPSerial:
 	def parse(self,s):
 		# mechanisms to update data structures
 		arr = s.split()
-		#print(arr)
+		print(arr)
 		
 		if arr[0] in {"tm","th","ph","pm"}:
 			self.d[arr[0]] = arr[1]
 		elif arr[0]=="q":
+			self.serialisup = True
 			self.d["kp"] = arr[1]
 			self.d["ki"] = arr[2]
 			self.d["kd"] = arr[3]
@@ -29,7 +30,6 @@ class HBPSerial:
 		print("starting serial reader on port "+self.port)
 		while True:
 			s = self.ser.readline().decode()
-			self.serialisup=True
 			self.parse(s)
 
 	def __init__(self,port):

@@ -46,7 +46,7 @@ class Program:
 	step=-1
 	running = False
 	runprogram = True
-	waittime=-1;
+	waittime=time.time()+10
 	waittemp=False
 	
 	xdata = {}
@@ -59,6 +59,7 @@ class Program:
 	def execute_program(self):
 		print("start program thread")
 		while self.runprogram:
+			time.sleep(0.1)	
 			if self.running and self.bt.serialAvailable():
 				
 				if self.waittime>time.time():
@@ -83,6 +84,10 @@ class Program:
 					self.waittemp=[command.split("_")[1],argument]
 				elif command=="wait_time":
 					self.waittime = time.time()+int(argument)
+				elif command=="autotune":
+					print ("Autotuning - exiting program control")
+					self.bt.autotune()
+					self.runprogram=False
 				else:
 					print("fel error in program")
 					self.runprogram=False
@@ -107,7 +112,6 @@ class Program:
 			self.step = -1
 			self.oldstep = -1
 			self.tableWidget.setDisabled(1)
-			self.running=True
 			
 	def stopalarm(self):
 	  # code to change the alarm indicator back to inactive
@@ -141,4 +145,7 @@ class Program:
 		#print self.ydata
 
 		self.plot.update_plot(self.xdata, self.ydata)
+
+	def run(self):
+		self.running=True
 

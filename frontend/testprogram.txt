@@ -1,5 +1,13 @@
-tm 66
-th 70
-wait_time 10
-wait_tm 28
+autotune 1
+th 30
 wait_th 30
+wait_time 10
+th 45
+wait_th 45
+wait_time 60
+th 66
+wait_th 66
+wait_time 120
+th 77
+wait_th 77
+wait_time 10

@@ -139,17 +139,9 @@ void hlt_control() {
     myPID.Compute();
 
   if(x++ > 10) { // print  temperature once per second  
-   if(!tuning) {
     Serial.print("th ");
     Serial.print(HLTTemp);
-    Serial.println("");
-   }
-    if(tuning) {
-//      Serial.print("d tuning HLT Window: ");
-//    Serial.println(HLTOutput);
-  }
-
-    
+    Serial.println("");  
     x=0;
   }
 
