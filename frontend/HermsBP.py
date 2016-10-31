@@ -123,34 +123,28 @@ class XTun(Tun):
                     
           
 class MainWin(QtGui.QMainWindow):
-     def __init__(self,bt):
-         QtGui.QMainWindow.__init__(self)
-         self.bt = bt
+	def __init__(self,bt):
+		QtGui.QMainWindow.__init__(self)
+		self.bt = bt
 
-         # Set up the user interface from Designer.
-         self.ui = uic.loadUi(UI_FILE)
-         self.ui.show()
+		# Set up the user interface from Designer.
+		self.ui = uic.loadUi(UI_FILE)
+		self.ui.show()
 
-         sc = TehFigure(self.ui.plotlayout)
+		sc = TehFigure(self.ui.plotlayout)
 
-         self.HLT = XTun(self.ui, bt, "h", self.ui.HLTSet, self.ui.HLTTemp, self.ui.toggleHLT, self.ui.HLTdial,self.ui.HLTPower)
-         self.MLT = XTun(self.ui, bt, "m", self.ui.MLTSet, self.ui.MLTTemp, self.ui.toggleMLT, self.ui.MLTdial,self.ui.MLTPower)
+		self.HLT = XTun(self.ui, bt, "h", self.ui.HLTSet, self.ui.HLTTemp, self.ui.toggleHLT, self.ui.HLTdial,self.ui.HLTPower)
+		self.MLT = XTun(self.ui, bt, "m", self.ui.MLTSet, self.ui.MLTTemp, self.ui.toggleMLT, self.ui.MLTdial,self.ui.MLTPower)
 
-         self.programstatus = Program(self.ui, bt,sc)
+		self.programstatus = Program(self.ui, bt,sc,self.ui.tableView)
 
+	def updateui(self):
+		self.MLT.update()
+		self.HLT.update()
+		self.programstatus.update()
 
-
-         # init callbacks
-
-
-     
-
-     # callback function
-
-     def updateui(self):
-          self.MLT.update()
-          self.HLT.update()
-          self.programstatus.update()
+	def startprogram(self, filename):
+		self.programstatus.load(filename)
 
 
 ### main
@@ -163,6 +157,8 @@ window = MainWin(bt)
 timer = QTimer()
 timer.timeout.connect(window.updateui)
 timer.start(1000)
+
+window.startprogram("testprogram.txt")
 
 
 sys.exit(app.exec_())

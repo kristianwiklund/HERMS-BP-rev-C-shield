@@ -4,6 +4,11 @@ import time
 
 class HBPSerial:
 
+	serialisup = False
+	
+	def serialAvailable(self):
+		return self.serialisup;
+
 	def parse(self,s):
 		# mechanisms to update data structures
 		arr = s.split()
@@ -24,6 +29,7 @@ class HBPSerial:
 		print("starting serial reader on port "+self.port)
 		while True:
 			s = self.ser.readline().decode()
+			self.serialisup=True
 			self.parse(s)
 
 	def __init__(self,port):

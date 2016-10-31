@@ -1,0 +1,3 @@
+tm 66
+th 70
+wait_tm 66
