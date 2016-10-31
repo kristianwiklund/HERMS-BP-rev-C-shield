@@ -12,7 +12,7 @@ class HBPSerial:
 	def parse(self,s):
 		# mechanisms to update data structures
 		arr = s.split()
-		print(arr)
+		#print(arr)
 		
 		if arr[0] in {"tm","th","ph","pm"}:
 			self.d[arr[0]] = arr[1]

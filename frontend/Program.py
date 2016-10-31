@@ -4,7 +4,7 @@ from PyQt4.uic import *			# ui files realizer
 from PyQt4 import QtGui, uic
 from operator import methodcaller
 import threading
-
+import time
 #
 # simple machine for running a mash program
 #
@@ -12,7 +12,7 @@ import threading
 #
 # tm <temp> set mash setpoint to temperature <temp>. Will cause error if the HLT is colder than <temp>
 # th <temp> set HLT setpoint to temperature <temp>
-# wait_time <minutes> wait for <minutes> minutes, then continue
+# wait_time <seconds> wait for <seconds> seconds, then continue
 # stepname <text> displays the <text> as step name in the gui
 # wait_tm <temp> wait until mash temp is <temp>
 # wait_th <temp> wait until hlt temp is <temp>
@@ -46,6 +46,8 @@ class Program:
 	step=-1
 	running = False
 	runprogram = True
+	waittime=-1;
+	waittemp=False
 	
 	xdata = {}
 	ydata = {}
@@ -58,6 +60,17 @@ class Program:
 		print("start program thread")
 		while self.runprogram:
 			if self.running and self.bt.serialAvailable():
+				
+				if self.waittime>time.time():
+					continue
+				
+				if self.waittemp:
+					if self.bt.getTemp(self.waittemp[0][1])<self.waittemp[1]:
+						continue
+					else:
+						self.waittemp=False
+						print "done waiting for temp"
+				
 				print(self.nextstep())
 				command = self.program[self.step][0]
 				argument = self.program[self.step][1]
@@ -65,6 +78,11 @@ class Program:
 				if command in {"th","tm"}:
 					print("setpoint "+command)
 					self.bt.setSetpoint(command[1],argument)
+				elif command in  {"wait_th","wait_tm"}:
+					print("waiting "+command)
+					self.waittemp=[command.split("_")[1],argument]
+				elif command=="wait_time":
+					self.waittime = time.time()+int(argument)
 				else:
 					print("fel error in program")
 					self.runprogram=False

@@ -1,3 +1,5 @@
 tm 66
 th 70
-wait_tm 66
+wait_time 10
+wait_tm 28
+wait_th 30
