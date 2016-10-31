@@ -48,36 +48,3 @@ class HLTRecirc:
         self.bt = bt
         HLTRecirc.update(self)
         
-class BrewStep:
-    step=255 
-    newstep=255
-
-    stepnames = {
-        0: "FILL",
-        1: "DELAY",
-        2: "PRE-HEAT",
-        3: "ADD GRAIN",
-        4: "REFILL",
-        5: "DOUGH IN",
-        6: "ACID REST",
-        7: "PROTEIN REST",
-        8: "SACC 1",
-        9: "SACC 2",
-        10: "MASH OUT",
-        11: "MASH OUT HOLD",
-        12: "SPARGE",
-        13: "BOIL",
-        14: "CHILL",
-        255: "IDLE"
-        };
-
-    def update(self):
-        self.newstep=self.bt.getProgramStep()
-
-    def __init__(self,bt):
-        self.bt = bt
-        BrewStep.update(self)
-    
-    def getStep(self):
-        self.update()
-        return self.newstep
