@@ -1,13 +1,11 @@
-autotune 1
 th 30
 wait_th 30
-wait_time 10
+wait_time 300
 th 45
 wait_th 45
-wait_time 60
+wait_time 300
 th 66
 wait_th 66
-wait_time 120
+wait_time 300
 th 77
 wait_th 77
-wait_time 10

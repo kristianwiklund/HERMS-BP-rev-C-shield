@@ -55,6 +55,10 @@ class Program:
 	ydata["HLT"] = []
 	xdata["MLT"] = []
 	ydata["MLT"] = []
+	xdata["MLTSET"] = []
+	ydata["MLTSET"] = []
+	xdata["HLTSET"] = []
+	ydata["HLTSET"] = []
 
 	def execute_program(self):
 		print("start program thread")
@@ -145,6 +149,14 @@ class Program:
 
 		self.xdata["MLT"].append(fullstatus["timestamp"])
 		self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
+		#print self.ydata
+
+                self.xdata["MLTSET"].append(fullstatus["timestamp"])
+		self.ydata["MLTSET"].append(float(fullstatus["MLT"]["setpoint"]))
+		#print self.ydata
+
+                self.xdata["HLTSET"].append(fullstatus["timestamp"])
+		self.ydata["HLTSET"].append(float(fullstatus["HLT"]["setpoint"]))
 		#print self.ydata
 
 		self.plot.update_plot(self.xdata, self.ydata)

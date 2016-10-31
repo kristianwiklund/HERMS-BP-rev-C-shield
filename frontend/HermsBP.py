@@ -31,11 +31,17 @@ class TehFigure:
 		self.figure = Figure(figsize=(5,4), dpi=100) # magic numbers
 		self.axes1=self.figure.add_subplot(111) # more magic
 		self.axes2=self.figure.add_subplot(111) # more magic
+		self.axes3=self.figure.add_subplot(111) # more magic
+		self.axes4=self.figure.add_subplot(111) # more magic
 		self.canvas = FigureCanvas(self.figure)
 		self.lines1, = self.axes1.plot([],[], '-')
 		self.lines2, = self.axes2.plot([],[], '-')
+		self.lines3, = self.axes3.plot([],[], '-')
+		self.lines4, = self.axes4.plot([],[], '-')
 		self.axes1.set_ylim(0, 100)        
 		self.axes2.set_ylim(0, 100)        
+		self.axes3.set_ylim(0, 100)        
+		self.axes4.set_ylim(0, 100)        
 		self.compute_initial_figure()
 		self.canvas.updateGeometry()
 		layoutwidget.addWidget(self.canvas)
@@ -51,11 +57,20 @@ class TehFigure:
 		self.lines1.set_ydata(ydata["HLT"])
 		self.lines2.set_xdata(xdata["MLT"])
 		self.lines2.set_ydata(ydata["MLT"])
+		self.lines3.set_xdata(xdata["HLTSET"])
+		self.lines3.set_ydata(ydata["HLTSET"])
+		self.lines4.set_xdata(xdata["MLTSET"])
+		self.lines4.set_ydata(ydata["MLTSET"])
+
 		#Need both of these in order to rescale
 		self.axes1.relim()
 		self.axes1.autoscale_view()
 		self.axes2.relim()
 		self.axes2.autoscale_view()
+		self.axes3.relim()
+		self.axes3.autoscale_view()
+		self.axes4.relim()
+		self.axes4.autoscale_view()
 		#We need to draw *and* flush
 		self.figure.canvas.draw()
 		self.figure.canvas.flush_events()
