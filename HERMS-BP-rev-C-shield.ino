@@ -20,11 +20,11 @@
 // a - initiate autotune
 
 // return values:
-// "ok" - command done
 // "t<h/m> <celsius>" - actual temperature in the thing
 // "q <p> <i> <d> <htl setpoint> <mlt setpoint>" - sent either when receiving a q command OR a t command or (unimplemented) when changing the setpoint with the rotary encoded
 // "e <error message>"
 // "d <debug message>"
+// "p<h/m>" which output power the thing is set to
 
 Buzzer buzzer;
 

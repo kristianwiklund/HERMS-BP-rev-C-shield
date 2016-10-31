@@ -48,12 +48,14 @@ void mlt_control() {
       if((MLTTemp<MLTSetpoint) && (HLTTemp>=MLTTemp)) {
         state=MLT_HEAT;
         herms_on();
+        Serial.println("pm 100");
       }
         break;
     case MLT_HEAT:
       if(MLTTemp>MLTSetpoint) {
         state=MLT_COOL;
         herms_off();
+        Serial.println("pm 0");
       }
       break;
 

@@ -1,5 +1,8 @@
 #include "config.h"
 #include "Arduino.h"
+#include "BrewpiBuzzer.h"
+
+extern Buzzer buzzer;
 
 extern void changeAutoTune();
 extern double HLTSetpoint, HLTSetpoint;
@@ -9,7 +12,7 @@ extern double kp,ki,kd;
 extern void writesetpoints();
 
 void print_regulator_settings() {
-        Serial.print("q ");
+      Serial.print("q ");
       Serial.print(kp);
       Serial.print(" ");
       Serial.print(ki);
@@ -32,6 +35,8 @@ void readandsettemp() {
   
   if(!Serial.available())
     return;
+
+  buzzer.beep(1,100);
 
   vessel = Serial.read();
   temperature = Serial.parseFloat();
@@ -60,6 +65,7 @@ void poll_serial() {
 
   switch(command) {
       case 'a':
+        buzzer.beep(2,100);
         changeAutoTune();
         break;
       case 't':
