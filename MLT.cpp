@@ -8,6 +8,7 @@
 
 float MLTTemp=33.0;
 double MLTSetpoint=31.0;
+unsigned char xx=10;
 
 void herms_off() {
   digitalWrite(valveherms, HIGH); // signals are INVERTED with the rev C shield
@@ -33,11 +34,18 @@ enum MLTState {MLT_OFF=0,MLT_HEAT,MLT_COOL,MLT_HPEAK, MLT_LPEAK} state=MLT_OFF;
 
 void mlt_control() {
 
+  if(xx++ > 10) { // print  temperature once per second  
+    Serial.print("tm ");
+    Serial.print(MLTTemp);
+    Serial.println("");
+   }
+
   switch(state) {
 
     case MLT_OFF:
     case MLT_COOL:
-      if(MLTTemp<MLTSetpoint) {
+      // only recirc through the coil of the HLT is hot enough
+      if((MLTTemp<MLTSetpoint) && (HLTTemp>=MLTTemp)) {
         state=MLT_HEAT;
         herms_on();
       }

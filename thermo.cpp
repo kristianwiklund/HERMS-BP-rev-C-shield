@@ -9,7 +9,7 @@ DallasTemperature sensors(&oneWire);
 
 DeviceAddress HLTThermo = {0x28, 0x8B, 0x1B, 0x6E, 0x05, 0x00, 0x00, 0xB0 };
 float HLTTemp=100.0;
-DeviceAddress MLTThermo = {0x28, 0x8B, 0x1B, 0x6E, 0x05, 0x00, 0x00, 0xB0 };
+DeviceAddress MLTThermo = {0x28, 0x05, 0x1E, 0x6E, 0x05, 0x00, 0x00, 0x9B  };
 
 
 
@@ -63,7 +63,7 @@ void thermo_setup() {
   Serial.println(" devices.");
 
   // report parasite power requirements
-  Serial.print("Parasite power is: "); 
+  Serial.print("d Parasite power is: "); 
   if (sensors.isParasitePowerMode()) Serial.println("ON");
   else Serial.println("OFF");
 

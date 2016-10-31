@@ -78,7 +78,7 @@ class XTun(Tun):
 
 	def setSetpointSave(self):
 		if not self.setpointsaved:
-			self.setPointWidget.setStyleSheet("QLCDNumber{color:green;}")
+			self.setPointWidget.setStyleSheet("QLCDNumber{color:yellow;}")
 			self.setpointsaved = True
 			self.bt.setSetpoint(self.id, self.manualsetpoint)
         
@@ -271,10 +271,10 @@ bt = HBPSerial("COM5:")
 app = QtGui.QApplication(sys.argv)
 window = MainWin(bt)
 
-# set a timer that update the status every ten seconds
+# set a timer that update the status every  second
 timer = QTimer()
 timer.timeout.connect(window.updateui)
-timer.start(10000)
+timer.start(1000)
 
 
 sys.exit(app.exec_())
