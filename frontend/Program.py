@@ -75,7 +75,10 @@ class Program:
 				print(self.nextstep())
 				command = self.program[self.step][0]
 				argument = self.program[self.step][1]
+				alls = self.bt.getFullStatus()
 				
+				self.plot.annotate(alls["timestamp"],int(argument),command)
+
 				if command in {"th","tm"}:
 					print("setpoint "+command)
 					self.bt.setSetpoint(command[1],argument)
