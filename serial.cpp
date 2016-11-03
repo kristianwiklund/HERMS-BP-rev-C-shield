@@ -1,6 +1,9 @@
 #include "config.h"
 #include "Arduino.h"
 #include "BrewpiBuzzer.h"
+#include <PID_v1.h>
+
+extern PID myPID;
 
 extern Buzzer buzzer;
 
@@ -26,6 +29,37 @@ void print_regulator_settings() {
 
 void serial_setup() {
     Serial.begin(9600);
+}
+
+void readandsetpid() {
+  char param;
+  double value;
+  
+  if(!Serial.available())
+    return;
+
+  buzzer.beep(4,100);
+
+  param = Serial.read();
+  value = Serial.parseFloat();
+
+  switch(param) {
+
+    case 'p':
+      kp = value;
+      break;
+    case'i':
+      ki = value;
+      break;
+    case 'd':
+      kd = value;
+      break;  
+  }
+
+    myPID.SetTunings(kp,ki,kd);
+    print_regulator_settings();
+
+
 }
 
 void readandsettemp() {
@@ -71,6 +105,9 @@ void poll_serial() {
       case 't':
         readandsettemp();
         break;
+      case 'k':
+        readandsetpid();
+        break;  
         
   }
 } 

@@ -1,7 +1,12 @@
 
 
 // HLT control - a standard 1A pid regulator
-// to be added: Autotune
+
+// assumptions after first round of testing:
+// the heat in the heating element can be assumed to be irrelevant
+// when we are handling large amounts of water (>10 liters). Hence,
+// we can use 100% heating until at 1 degree or so from the setpoint, 
+// where we turn on the PID
 
 #include <PID_v1.h>
 #include <PID_AutoTune_v0.h>
@@ -15,7 +20,8 @@ volatile long onTime = 0;
 long oldOnTime=0;
 // 30 liters autotune: [u'q', u'339.53', u'0.22', u'0.00', u'75.00', u'31.00']
 
-double kp=679,ki=0.61,kd=0.1;
+//double kp=679,ki=0,kd=0;
+double kp=1000,ki=5,kd=1;
 
 byte ATuneModeRemember=2;
 double aTuneStep=2000, aTuneNoise=1, aTuneStartValue=2000;
@@ -33,7 +39,7 @@ void hlt_setup() {
   myPID.SetMode(AUTOMATIC);
   windowStartTime = millis();
   myPID.SetSampleTime(HLTSampleTime);
-  HLTSetpoint = 30.0;
+  HLTSetpoint = 84.0;
   writesetpoints();
   pinMode(RelayPin, OUTPUT);
   digitalWrite(RelayPin, HIGH);

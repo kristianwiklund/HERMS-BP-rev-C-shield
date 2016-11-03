@@ -1,4 +1,0 @@
-th 75
-wait_th 75 
-wait_time 10
-autotune 1
