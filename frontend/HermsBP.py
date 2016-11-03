@@ -165,7 +165,7 @@ class MainWin(QtGui.QMainWindow):
 
 ### main
 
-bt = HBPSerial("/dev/ttyACM1")
+bt = HBPSerial("/dev/ttyACM0")
 app = QtGui.QApplication(sys.argv)
 window = MainWin(bt)
 

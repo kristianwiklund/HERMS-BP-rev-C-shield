@@ -9,14 +9,16 @@
 
 double HLTSetpoint, HLTInput, HLTOutput=0;
 unsigned long  modelTime, serialTime;
-
+ 
 unsigned long windowStartTime;
 volatile long onTime = 0;
 long oldOnTime=0;
-double kp=58.21,ki=0.14,kd=0;
+// 30 liters autotune: [u'q', u'339.53', u'0.22', u'0.00', u'75.00', u'31.00']
+
+double kp=679,ki=0.61,kd=0.1;
 
 byte ATuneModeRemember=2;
-double aTuneStep=200, aTuneNoise=1, aTuneStartValue=200;
+double aTuneStep=2000, aTuneNoise=1, aTuneStartValue=2000;
 unsigned int aTuneLookBack=20;
 boolean tuning = false;
 
