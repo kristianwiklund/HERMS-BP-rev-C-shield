@@ -20,6 +20,9 @@ volatile long onTime = 0;
 long oldOnTime=0;
 // 30 liters autotune: [u'q', u'339.53', u'0.22', u'0.00', u'75.00', u'31.00']
 
+// which mode we are in: no heat, coast to 2 degrees below setpoint, PID
+enum HLTMode {H_OFF, H_TURBO, H_PID} hltmode = H_PID;
+
 //double kp=679,ki=0,kd=0;
 double kp=1000,ki=5,kd=1;
 
@@ -36,8 +39,7 @@ extern void print_regulator_settings();
 
 void hlt_setup() {
   myPID.SetOutputLimits(0,HLTWindowSize);
-  myPID.SetMode(AUTOMATIC);
-  windowStartTime = millis();
+    windowStartTime = millis();
   myPID.SetSampleTime(HLTSampleTime);
   HLTSetpoint = 84.0;
   writesetpoints();
@@ -111,15 +113,8 @@ void changeAutoTune()
   }
 }
 
-
-
-void hlt_control() {
-
-    unsigned long now = millis();
-
-  HLTInput = HLTTemp;
-
-  if(tuning)
+void hlt_pid() {
+    if(tuning)
   {
     byte val = (aTune.Runtime());
     if (val!=0)
@@ -137,6 +132,37 @@ void hlt_control() {
     }
   } else
     myPID.Compute();
+
+}
+
+
+void hlt_control() {
+
+  unsigned long now = millis();
+
+  HLTInput = HLTTemp;
+
+  // check the temperatures. if we are outside the range where we PID, go to turbo (and vice versa)
+  switch(hltmode) {
+    case H_OFF:
+      HLTOutput = 0;
+      break;
+    case H_PID:
+      if ( HLTInput < HLTSetpoint - 2) {
+        hltmode = H_TURBO;
+        myPID.SetMode(MANUAL);
+      }
+      break;
+    case H_TURBO:  
+      HLTOutput = 100;
+      if (HLTInput >= HLTSetpoint - 2) {
+        hltmode = H_PID;
+        myPID.SetMode(AUTOMATIC);
+      }
+      break;
+  }
+
+   hlt_pid();
 
   if(x++ > 10) { // print  temperature once per second  
     Serial.print("th ");
