@@ -13,6 +13,7 @@ extern double HLTSetpoint, HLTSetpoint;
 extern double kp,ki,kd;
 
 extern void writesetpoints();
+extern void  hlt_turbo_mode();
 
 void print_regulator_settings() {
       Serial.print("q ");
@@ -78,6 +79,7 @@ void readandsettemp() {
   switch(vessel) {
     case 'h':
       HLTSetpoint = temperature;
+      hlt_turbo_mode();
       break;
     case 'm': 
   	  MLTSetpoint = temperature;

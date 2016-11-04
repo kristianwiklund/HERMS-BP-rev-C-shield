@@ -20,11 +20,11 @@ volatile long onTime = 0;
 long oldOnTime=0;
 // 30 liters autotune: [u'q', u'339.53', u'0.22', u'0.00', u'75.00', u'31.00']
 
-// which mode we are in: no heat, coast to 2 degrees below setpoint, PID
+// which mode we are in: no heat, coast to 0.5 degrees below setpoint, PID
 enum HLTMode {H_OFF, H_TURBO, H_PID} hltmode = H_PID;
 
 //double kp=679,ki=0,kd=0;
-double kp=1000,ki=5,kd=1;
+double kp=680,ki=0.5,kd=0;
 
 byte ATuneModeRemember=2;
 double aTuneStep=2000, aTuneNoise=1, aTuneStartValue=2000;
@@ -41,7 +41,7 @@ void hlt_setup() {
   myPID.SetOutputLimits(0,HLTWindowSize);
     windowStartTime = millis();
   myPID.SetSampleTime(HLTSampleTime);
-  HLTSetpoint = 84.0;
+  HLTSetpoint = 10.0;
   writesetpoints();
   pinMode(RelayPin, OUTPUT);
   digitalWrite(RelayPin, HIGH);
@@ -135,6 +135,18 @@ void hlt_pid() {
 
 }
 
+void hlt_turbo_mode() {
+
+  // go to turbo heating mode if we are sufficiently far below the setpoint
+  
+      if (( HLTInput < (HLTSetpoint - 0.5))) {
+        hltmode = H_TURBO;
+        myPID.SetMode(MANUAL);
+                HLTOutput = HLTWindowSize; // 100% output
+        Serial.println("d turbo mode");
+      }
+  
+}
 
 void hlt_control() {
 
@@ -147,18 +159,18 @@ void hlt_control() {
     case H_OFF:
       HLTOutput = 0;
       break;
-    case H_PID:
-      if ( HLTInput < HLTSetpoint - 2) {
-        hltmode = H_TURBO;
-        myPID.SetMode(MANUAL);
-      }
-      break;
-    case H_TURBO:  
-      HLTOutput = 100;
-      if (HLTInput >= HLTSetpoint - 2) {
+    case H_PID:  
+
+      break;  
+    case H_TURBO:
+      if (HLTInput >= (HLTSetpoint)) {
         hltmode = H_PID;
+            HLTOutput = 0; // start clean
+        
         myPID.SetMode(AUTOMATIC);
+        Serial.println("d pid mode");
       }
+
       break;
   }
 
