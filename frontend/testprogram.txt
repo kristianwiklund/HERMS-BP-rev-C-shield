@@ -1,3 +1,2 @@
-th 65
-wait_th 65
-autotune 1
+th 72
+wait_th 72
