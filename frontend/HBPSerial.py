@@ -1,4 +1,4 @@
-import serial
+from  serial import Serial
 import threading
 import time
 
@@ -35,7 +35,7 @@ class HBPSerial:
 	def __init__(self,port):
 		self.port = port
 		self.start_time = time.time()
-		self.ser = serial.Serial(port=self.port,baudrate=9600)
+		self.ser = Serial(port=self.port,baudrate=9600)
 		self.d={}
 
 		self.d["sm"] = 0
