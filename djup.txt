@@ -1,0 +1,7 @@
+volym;djup:temp;kommentar
+0;0;20;tom
+24;22.2;18.5;pump igång
+24;22.5;73;pump igång
+25;23.6;73;pump igång
+25;23.8;22.5;pump igång
+

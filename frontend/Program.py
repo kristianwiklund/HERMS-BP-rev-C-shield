@@ -74,7 +74,7 @@ class Program:
 						continue
 					else:
 						self.waittemp=False
-						print "done waiting for temp"
+						print ("done waiting for temp")
 				
 				print(self.nextstep())
 				command = self.program[self.step][0]
@@ -111,14 +111,14 @@ class Program:
 		
 	def load(self,filename):
 		with open(filename) as f:
-			self.program = map(methodcaller("split", " "), f.read().splitlines())
-			#print(self.program)
-	  		self.tablemodel = MyTableModel(self.program)
-			self.tableWidget.setModel(self.tablemodel)
-			#self.tableWidget.layoutChanged.emit()
-			self.step = -1
-			self.oldstep = -1
-			self.tableWidget.setDisabled(1)
+                        self.program = map(methodcaller("split", " "), f.read().splitlines())
+                        #print(self.program)
+                        self.tablemodel = MyTableModel(self.program)
+                        self.tableWidget.setModel(self.tablemodel)
+                        #self.tableWidget.layoutChanged.emit()
+                        self.step = -1
+                        self.oldstep = -1
+                        self.tableWidget.setDisabled(1)
 			
 	def stopalarm(self):
 	  # code to change the alarm indicator back to inactive
@@ -138,28 +138,28 @@ class Program:
 
 	def update(self):
 	
-		# need to update the progress bars and display which step is active
-		# change this
-		fullstatus = self.bt.getFullStatus()
-		#               print ("step" + str(brewstep))
+                # need to update the progress bars and display which step is active
+                # change this
+                fullstatus = self.bt.getFullStatus()
+                #               print ("step" + str(brewstep))
 
-
-		self.xdata["HLT"].append(fullstatus["timestamp"])
-		self.ydata["HLT"].append(float(fullstatus["HLT"]["temp"]))
-
-		self.xdata["MLT"].append(fullstatus["timestamp"])
-		self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
-		#print self.ydata
+                self.xdata["HLT"].append(fullstatus["timestamp"])
+                self.ydata["HLT"].append(float(fullstatus["HLT"]["temp"]))
+                
+                self.xdata["MLT"].append(fullstatus["timestamp"])
+                self.ydata["MLT"].append(float(fullstatus["MLT"]["temp"]))
+                #print self.ydata
 
                 self.xdata["MLTSET"].append(fullstatus["timestamp"])
-		self.ydata["MLTSET"].append(float(fullstatus["MLT"]["setpoint"]))
-		#print self.ydata
+                self.ydata["MLTSET"].append(float(fullstatus["MLT"]["setpoint"]))
+                #print self.ydata
 
                 self.xdata["HLTSET"].append(fullstatus["timestamp"])
-		self.ydata["HLTSET"].append(float(fullstatus["HLT"]["setpoint"]))
-		#print self.ydata
+                self.ydata["HLTSET"].append(float(fullstatus["HLT"]["setpoint"]))
+                #print self.ydata
 
-		self.plot.update_plot(self.xdata, self.ydata)
+
+                self.plot.update_plot(self.xdata, self.ydata)
 
 	def run(self):
 		self.running=True

@@ -24,7 +24,7 @@ class HBPSerial:
 			self.d["sh"] = arr[4]
 			self.d["sm"] = arr[5]
 		else:
-			print "unimplemented response "+s
+			print( "unimplemented response "+s)
 			
 	def read_from_port(self):
 		print("starting serial reader on port "+self.port)
@@ -47,7 +47,7 @@ class HBPSerial:
 		
 		
 	def command(self,s):
-		self.ser.write(s)
+		self.ser.write(s.encode())
 	
 	def autotune(self):
 		self.command("a")
