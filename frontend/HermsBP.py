@@ -1,10 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 
-from PyQt4.QtCore import *		# Qt core
-from PyQt4.QtGui import *		# Qt GUI interface
-from PyQt4.uic import *			# ui files realizer
-from PyQt4 import QtGui, uic
+from PyQt5.QtCore import *		# Qt core
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *		# Qt GUI interface
+from PyQt5.uic import *			# ui files realizer
+from PyQt5 import QtGui, uic
 from HBPSerial import *
 from mash import *
 from functools import *
@@ -14,7 +15,7 @@ use_pyside = qt_compat.QT_API == qt_compat.QT_API_PYSIDE
 if use_pyside:
     from PySide import QtGui, QtCore
 else:
-    from PyQt4 import QtGui, QtCore
+    from PyQt5 import QtGui, QtCore
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -99,14 +100,15 @@ class XTun(Tun):
 			self.bt.setSetpoint(self.id, self.manualsetpoint)
         
 	def __init__(self, w, bt, myid, setpoint, temperature, setbutton, dial, pwrlabel):
-		Tun.__init__(self,bt, myid)
-		self.setPointWidget = setpoint
-		self.dialWidget = dial
-		self.temperatureWidget = temperature
-		w.connect(dial,SIGNAL("valueChanged(int)"), partial(XTun.setSetpointManually,self))
-		self.setbuttonWidget = setbutton
-		setbutton.clicked.connect(partial(XTun.setSetpointSave,self))
-		self.pwrLabel = pwrlabel
+            Tun.__init__(self,bt, myid)
+            self.setPointWidget = setpoint
+            self.dialWidget = dial
+            self.temperatureWidget = temperature
+            #		w.connect(dial,SIGNAL("valueChanged(int)"), partial(XTun.setSetpointManually,self))
+#            dial.completed.connect( partial(XTun.setSetpointManually,self))
+            self.setbuttonWidget = setbutton
+            setbutton.clicked.connect(partial(XTun.setSetpointSave,self))
+            self.pwrLabel = pwrlabel
   
 	def update(self):
 		if self.setpointsaved:
@@ -120,10 +122,10 @@ class XTun(Tun):
 
 			if (self.newtemperature < 200) and (self.newtemperature > -20): # disconnected onewire results in weird numbers.
 				if self.newtemperature != self.temperature:
-					self.temperatureWidget.setDecMode()
-					self.temperatureWidget.display(self.newtemperature)
-					self.temperatureWidget.setStyleSheet("QLCDNumber{color:red;}")
-					self.temperature = self.newtemperature
+				    self.temperatureWidget.setDecMode()
+				    self.temperatureWidget.display(self.newtemperature)
+				    self.temperatureWidget.setStyleSheet("QLCDNumber{color:red;}")
+				    self.temperature = self.newtemperature
 				
 			else:
 				self.temperatureWidget.setHexMode()
@@ -137,9 +139,9 @@ class XTun(Tun):
 
                     
           
-class MainWin(QtGui.QMainWindow):
+class MainWin(QMainWindow):
 	def __init__(self,bt):
-		QtGui.QMainWindow.__init__(self)
+		QMainWindow.__init__(self)
 		self.bt = bt
 
 		# Set up the user interface from Designer.
@@ -166,7 +168,7 @@ class MainWin(QtGui.QMainWindow):
 ### main
 
 bt = HBPSerial("/dev/ttyACM0")
-app = QtGui.QApplication(sys.argv)
+app = QApplication(sys.argv)
 window = MainWin(bt)
 
 # set a timer that update the status every  second
